@@ -111,7 +111,7 @@ jobs:
       - name: bump version
         run: |
           cd release
-          $RELEASE_COMMAND
+          eval $RELEASE_COMMAND
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
