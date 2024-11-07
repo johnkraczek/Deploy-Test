@@ -28,7 +28,7 @@ jobs:
       - uses: php-actions/composer@v6
       - uses: oven-sh/setup-bun@v2
         with:
-          container_workdir: /release
+          working_dir: "release"
 
       - name: Install dependencies
         run: |
