@@ -59,11 +59,11 @@ jobs:
 
       ## End Current Version
 
-      ## Update Version
-      - name: Update Version Command
+      ## GET the command to check the version we will be updating to.
+      - name: Get Update Version Command String
         run: |
-          if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-            echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
+          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+            echo "RELEASE_VERSION_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
               echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
@@ -72,7 +72,7 @@ jobs:
             fi
           fi
 
-      - name: Debug Update Version Command
+      - name: Debug Update Version Command string
         run: |
           echo ${{ env.RELEASE_VERSION_COMMAND }}
       ## End Update Version
