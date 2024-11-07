@@ -1,0 +1,17 @@
+{
+    "name": "ydtb/deploy-test",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "YDTBTestRoot\\DeployTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "John Kraczek",
+            "email": "john@kraczek.com"
+        }
+    ],
+    "require": {}
+}
