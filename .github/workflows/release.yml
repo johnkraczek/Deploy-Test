@@ -60,7 +60,7 @@ jobs:
 
       - name: TEST
         run: |
-          echo "RELEASE_VERSION_COMMAND=$(${{CMD_STRING}})" >> $GITHUB_ENV
+          echo "RELEASE_VERSION_COMMAND=$(${{env.CMD_STRING}})" >> $GITHUB_ENV
           echo ${{ env.RELEASE_VERSION_COMMAND }}
 
       ## End Current Version
