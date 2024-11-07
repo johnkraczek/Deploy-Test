@@ -46,6 +46,7 @@ jobs:
           bun install
           git checkout bun.lockb
 
+      ## Current Version
       - name: Capture Current Version
         id: capture_current_version
         run: |
@@ -56,8 +57,10 @@ jobs:
         run: |
           echo ${{ env.CURRENT_VERSION }}
 
+      ## End Current Version
+
+      ## Update Version
       - name: Update Version Release Command
-        id: capture_version
         run: |
           if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
             echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
@@ -72,17 +75,20 @@ jobs:
       - name: Debug Update Version Release Command
         run: |
           echo ${{ env.RELEASE_VERSION_COMMAND }}
-
-      - name: Capture Update Version
-        id: capture_version
+      ## End Update Version
+      ## Release Version
+      - name: Capture Release Version
         run: |
           cd release
-          echo "RELEASE_VERSION='${{ env.RELEASE_VERSION_COMMAND }}
+          echo "RELEASE_VERSION='${{ env.RELEASE_VERSION_COMMAND }} '" >> $GITHUB_ENV
 
       - name: Debug Release Version
         run: |
-          echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+          echo ${{ RELEASE_VERSION }}
 
+      ## End Release Version
+
+      ## Get Release Command
       - name: Determine Release Command
         id: determine_release_command
         run: |
@@ -100,36 +106,38 @@ jobs:
         run: |
           echo ${{ env.RELEASE_COMMAND }}
 
-      # - name: bump version
-      #   run: |
-      #     cd release
-      #     git config user.name github-actions[bot]
-      #     git config user.email github-actions[bot]@users.noreply.github.com
-      #     if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-      #       echo "RELEASE_VERSION=$(bun release-it --preRelease )" >> $GITHUB_ENV
-      #     else
-      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-      #         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
-      #       else
-      #         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
-      #       fi
-      #     fi
+## End Get Release Command
 
-      # - name: Zip directory leaving out node_modules and .git
-      #   run: |
+# - name: bump version
+#   run: |
+#     cd release
+#     git config user.name github-actions[bot]
+#     git config user.email github-actions[bot]@users.noreply.github.com
+#     if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
+#       echo "RELEASE_VERSION=$(bun release-it --preRelease )" >> $GITHUB_ENV
+#     else
+#       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+#         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+#       else
+#         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+#       fi
+#     fi
 
-      #     zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
+# - name: Zip directory leaving out node_modules and .git
+#   run: |
 
-      # - name: Debug folder status
-      #   run: |
-      #     ls -la
+#     zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
-      # - name: Release
-      #   uses: softprops/action-gh-release@v2
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   with:
-      #     name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-      #     tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-      #     prerelease: ${{ inputs.bump_level == 'prepatch' }}
-      #     files: |
-      #       *.zip
+# - name: Debug folder status
+#   run: |
+#     ls -la
+
+# - name: Release
+#   uses: softprops/action-gh-release@v2
+#   if: startsWith(github.ref, 'refs/tags/')
+#   with:
+#     name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+#     tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+#     prerelease: ${{ inputs.bump_level == 'prepatch' }}
+#     files: |
+#       *.zip
