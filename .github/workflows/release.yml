@@ -74,20 +74,20 @@ jobs:
         run: |
           echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
 
-      - name: bump version
-        run: |
-          cd release
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          if ["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]; then
-            echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
-          else
-            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
-            else
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
-            fi
-          fi
+      # - name: bump version
+      #   run: |
+      #     cd release
+      #     git config user.name github-actions[bot]
+      #     git config user.email github-actions[bot]@users.noreply.github.com
+      #     if ["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]; then
+      #       echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
+      #     else
+      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+      #       else
+      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+      #       fi
+      #     fi
 
       # - name: Zip directory leaving out node_modules and .git
       #   run: |
