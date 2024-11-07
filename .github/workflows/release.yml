@@ -58,7 +58,7 @@ jobs:
         id: capture_version
         run: |
           cd release
-          echo "RELEASE_VERSION=$(bun run release-it {{ inputs.bump_level }} --release-version )"" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=$(bun run release-it prepatch --release-version )"" >> $GITHUB_ENV
 
       # - name: Zip directory leaving out node_modules and .git
       #   run: |
