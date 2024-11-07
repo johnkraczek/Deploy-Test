@@ -56,47 +56,73 @@ jobs:
         run: |
           echo ${{ env.CURRENT_VERSION }}
 
+      - name: Update Version Release Command
+        id: capture_version
+        run: |
+          if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
+            echo "RELEASE_VERSION_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
+          else
+            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+              echo "RELEASE_VERSION_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+            else
+              echo "RELEASE_VERSION_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
+            fi
+          fi
+
+      - name: Debug Update Version Release Command
+        run: |
+          echo ${{ env.RELEASE_VERSION_COMMAND }}
+
       - name: Capture Update Version
         id: capture_version
         run: |
           cd release
-          if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-            echo "RELEASE_VERSION=$(bun run release-it --preRelease --release-version )" >> $GITHUB_ENV
-          else
-            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
-            else
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --release-version)" >> $GITHUB_ENV
-            fi
-          fi
+          echo "RELEASE_VERSION='${{ env.RELEASE_VERSION_COMMAND }}
 
       - name: Debug Release Version
         run: |
           echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
 
-      - name: bump version
+      - name: Determine Release Command
+        id: determine_release_command
         run: |
-          cd release
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-            echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
+          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+            echo "RELEASE_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
             else
-              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
             fi
           fi
+
+      - name: Debug Determine Release Command
+        run: |
+          echo ${{ env.RELEASE_COMMAND }}
+
+      # - name: bump version
+      #   run: |
+      #     cd release
+      #     git config user.name github-actions[bot]
+      #     git config user.email github-actions[bot]@users.noreply.github.com
+      #     if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
+      #       echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
+      #     else
+      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+      #       else
+      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+      #       fi
+      #     fi
 
       # - name: Zip directory leaving out node_modules and .git
       #   run: |
 
       #     zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
-      - name: Debug folder status
-        run: |
-          ls -la
+      # - name: Debug folder status
+      #   run: |
+      #     ls -la
 
       # - name: Release
       #   uses: softprops/action-gh-release@v2
