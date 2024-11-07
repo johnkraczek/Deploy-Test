@@ -40,23 +40,11 @@ jobs:
           bun install
           git checkout bun.lockb
 
-      - name: Ouput Debug Information
-        run: |
-          cd release
-          echo "Bump Level: ${{inputs.bump_level}}"
-          echo "Release Version: $(bun run release-it ${{inputs.bump_level}} --release-version )"
-          ls -la
-
-      - name: debug git
-        run: |
-          cd release
-          git status
-
       - name: Capture Current Version
         id: capture_current_version
         run: |
           cd release
-          echo "RELEASE_VERSION=$(bun run release-it --release-version --no-increment --dry-run )" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=$(bun run release-it --release-version --no-increment)" >> $GITHUB_ENV
 
       - name: Debug Release Version
         run: |
