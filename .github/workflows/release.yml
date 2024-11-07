@@ -27,7 +27,6 @@ jobs:
       - name: Install dependencies
         run: |
           bun install
-          composer install
 
       - name: bump version
         run: |
