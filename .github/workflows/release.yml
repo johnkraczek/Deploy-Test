@@ -49,6 +49,12 @@ jobs:
           cd release
           git status
 
+      - name: Capture release version
+        id: capture_version
+        run: |
+          cd release
+          echo "RELEASE_VERSION=$(bun run release-it ${{inputs.bump_level}} --release-version )" >> $GITHUB_ENV
+
       - name: bump version
         run: |
           cd release
@@ -56,11 +62,9 @@ jobs:
           git config user.email github-actions[bot]@users.noreply.github.com
           bun run release-it "${{inputs.bump_level}}" --ci
 
-      - name: Capture release version
-        id: capture_version
+      - name: Debug Release Version
         run: |
-          cd release
-          echo "RELEASE_VERSION=$(bun run release-it ${{inputs.bump_level}} --release-version )" >> $GITHUB_ENV
+          echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
 
       # - name: Zip directory leaving out node_modules and .git
       #   run: |
