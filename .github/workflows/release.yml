@@ -80,7 +80,7 @@ jobs:
       - name: Capture Release Version
         run: |
           cd release
-          ${{ env.RELEASE_VERSION_COMMAND }}
+          $RELEASE_VERSION_COMMAND
 
       - name: Debug Release Version
         run: |
@@ -88,30 +88,30 @@ jobs:
 
       ## End Release Version
 
-      ## Get Release Command
-      - name: Determine Release Command
-        id: determine_release_command
-        run: |
-          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "RELEASE_COMMAND='bun release-it --preRelease'" >> $GITHUB_ENV
-          else
-            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
-            else
-              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }}'" >> $GITHUB_ENV
-            fi
-          fi
+      # ## Get Release Command
+      # - name: Determine Release Command
+      #   id: determine_release_command
+      #   run: |
+      #     if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+      #       echo "RELEASE_COMMAND='bun release-it --preRelease'" >> $GITHUB_ENV
+      #     else
+      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+      #         echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+      #       else
+      #         echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }}'" >> $GITHUB_ENV
+      #       fi
+      #     fi
 
-      - name: Debug Determine Release Command
-        run: |
-          echo ${{ env.RELEASE_COMMAND }}
+      # - name: Debug Determine Release Command
+      #   run: |
+      #     echo ${{ env.RELEASE_COMMAND }}
 
-      ## End Get Release Command
+      # ## End Get Release Command
 
-      - name: bump version
-        run: |
-          cd release
-          eval $RELEASE_COMMAND
+      # - name: bump version
+      #   run: |
+      #     cd release
+      #     eval $RELEASE_COMMAND
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
