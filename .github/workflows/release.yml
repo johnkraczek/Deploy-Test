@@ -28,6 +28,12 @@ jobs:
         run: |
           bun install
 
+      - name: Ouput Debug Information
+        run: |
+          echo "Bump Level: {{ inputs.bump_level }}"
+          echo "Release Version: $(bun run release-it {{ inputs.bump_level }} --release-version )"
+          ls -la
+
       - name: bump version
         run: |
           bun run release-it {{ inputs.bump_level }} --ci
