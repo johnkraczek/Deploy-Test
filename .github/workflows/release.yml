@@ -80,7 +80,7 @@ jobs:
       - name: Capture Release Version
         run: |
           cd release
-          echo "RELEASE_VERSION=$(eval ${{ env.RELEASE_VERSION_COMMAND }})" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=$( ${{ env.RELEASE_VERSION_COMMAND }} )" >> $GITHUB_ENV
 
       - name: Debug Release Version
         run: |
