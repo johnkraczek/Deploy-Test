@@ -108,20 +108,10 @@ jobs:
 
 ## End Get Release Command
 
-# - name: bump version
-#   run: |
-#     cd release
-#     git config user.name github-actions[bot]
-#     git config user.email github-actions[bot]@users.noreply.github.com
-#     if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-#       echo "RELEASE_VERSION=$(bun release-it --preRelease )" >> $GITHUB_ENV
-#     else
-#       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-#         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
-#       else
-#         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
-#       fi
-#     fi
+- name: bump version
+  run: |
+    cd release
+    $(${{ env.RELEASE_COMMAND }})
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
