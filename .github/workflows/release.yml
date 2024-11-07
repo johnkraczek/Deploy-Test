@@ -52,39 +52,45 @@ jobs:
         run: |
           cd release
           echo "CURRENT_VERSION=$(bun release-it --release-version --no-increment)" >> $GITHUB_ENV
-
-      - name: Debug Current Version
-        run: |
           echo ${{ env.CURRENT_VERSION }}
+
+      - name: make command string
+        run: |
+          echo 'CMD_STRING="bun release-it --release-version"' >> $GITHUB_ENV
+
+      - name: TEST
+        run: |
+          echo "RELEASE_VERSION_COMMAND=$(${{CMD_STRING}})" >> $GITHUB_ENV
+          echo ${{ env.RELEASE_VERSION_COMMAND }}
 
       ## End Current Version
 
-      ## GET the command to check the version we will be updating to.
-      - name: Get Update Version Command String
-        run: |
-          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
-          else
-            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
-            else
-              echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
-            fi
-          fi
+      # ## GET the command to check the version we will be updating to.
+      # - name: Get Update Version Command String
+      #   run: |
+      #     if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+      #       echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
+      #     else
+      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+      #         echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+      #       else
+      #         echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
+      #       fi
+      #     fi
 
-      - name: Debug Update Version Command string
-        run: |
-          echo ${{ env.RELEASE_VERSION_COMMAND }}
-      ## End Update Version
-      ## Release Version
-      - name: Capture Release Version
-        run: |
-          cd release
-          $RELEASE_VERSION_COMMAND
+      # - name: Debug Update Version Command string
+      #   run: |
+      #     echo ${{ env.RELEASE_VERSION_COMMAND }}
+      # ## End Update Version
+      # ## Release Version
+      # - name: Capture Release Version
+      #   run: |
+      #     cd release
+      #     $RELEASE_VERSION_COMMAND
 
-      - name: Debug Release Version
-        run: |
-          echo "${{ env.RELEASE_VERSION }}"
+      # - name: Debug Release Version
+      #   run: |
+      #     echo "${{ env.RELEASE_VERSION }}"
 
       ## End Release Version
 
