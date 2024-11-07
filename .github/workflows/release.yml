@@ -12,11 +12,6 @@ on:
           - patch
           - minor
           - major
-      root_php_file:
-        description: "The root PHP file of the plugin."
-        required: true
-        default: "plugin.php"
-        type: string
 permissions:
   contents: write
 

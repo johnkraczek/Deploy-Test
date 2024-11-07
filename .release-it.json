@@ -14,7 +14,7 @@
         "@release-it/bumper": {
             "out": [
                 {
-                    "file": "ydtb-elements.php",
+                    "file": "plugin-loader.php",
                     "type": "text/php"
                 }
             ]
