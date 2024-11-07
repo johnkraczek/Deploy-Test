@@ -56,30 +56,21 @@ jobs:
           cd release
           echo "RELEASE_VERSION=$(bun run release-it {{ inputs.bump_level }} --release-version )"" >> $GITHUB_ENV
 
-      - name: Zip directory leaving out node_modules and .git
-        run: |
-          dir_name=$(basename "$PWD")
-          zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
+      # - name: Zip directory leaving out node_modules and .git
+      #   run: |
 
-      # - name: Create a Release
-      #   uses: elgohr/Github-Release-Action@v5
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     title: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-      #     prerelease: ${{ inputs.bump_level == 'prepatch' }}
-      #     tag: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+      #     zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
       - name: Debug folder status
         run: |
           ls -la
 
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-          tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-          prerelease: ${{ inputs.bump_level == 'prepatch' }}
-          files: |
-            *.zip
+      # - name: Release
+      #   uses: softprops/action-gh-release@v2
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+      #     tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+      #     prerelease: ${{ inputs.bump_level == 'prepatch' }}
+      #     files: |
+      #       *.zip
