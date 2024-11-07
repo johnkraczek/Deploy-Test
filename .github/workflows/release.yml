@@ -35,6 +35,7 @@ jobs:
         run: |
           cd release
           bun install
+          git checkout bun.lockb
 
       - name: Ouput Debug Information
         run: |
