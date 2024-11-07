@@ -2,7 +2,7 @@ name: Build & Tag Wordpress Plugins.
 description: "Build and tag Wordpress plugins with the version number."
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       bump_level:
         type: choice
