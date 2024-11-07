@@ -40,8 +40,8 @@ jobs:
       - name: Ouput Debug Information
         run: |
           cd release
-          echo "Bump Level: {{ inputs.bump_level }}"
-          echo "Release Version: $(bun run release-it {{ inputs.bump_level }} --release-version )"
+          echo "Bump Level: ${inputs.bump_level}"
+          echo "Release Version: $(bun run release-it ${inputs.bump_level} --release-version )"
           ls -la
 
       - name: debug git
@@ -52,7 +52,9 @@ jobs:
       - name: bump version
         run: |
           cd release
-          bun run release-it prepatch --ci
+          git config --global user.email "${GH_USERNAME}@users.noreply.github.com"
+          git config --global user.name "${GH_USERNAME}"
+          bun run release-it "${inputs.bump_level}" --ci
 
       - name: Capture release version
         id: capture_version
