@@ -40,8 +40,8 @@ jobs:
       - name: Ouput Debug Information
         run: |
           cd release
-          echo "Bump Level: ${inputs.bump_level}"
-          echo "Release Version: $(bun run release-it ${inputs.bump_level} --release-version )"
+          echo "Bump Level: ${{inputs.bump_level}}"
+          echo "Release Version: $(bun run release-it ${{inputs.bump_level}} --release-version )"
           ls -la
 
       - name: debug git
