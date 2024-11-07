@@ -85,7 +85,7 @@ jobs:
 
       - name: Debug Release Version
         run: |
-          echo "${{ env.RELEASE_VERSION }}""
+          echo "${{ env.RELEASE_VERSION }}"
 
       ## End Release Version
 
