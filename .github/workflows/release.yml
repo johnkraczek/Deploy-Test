@@ -93,12 +93,12 @@ jobs:
         id: determine_release_command
         run: |
           if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "RELEASE_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
+            echo "RELEASE_COMMAND='bun release-it --preRelease'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
             else
-              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }}'" >> $GITHUB_ENV
             fi
           fi
 
