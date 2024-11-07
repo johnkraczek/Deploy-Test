@@ -52,7 +52,7 @@ jobs:
       - name: bump version
         run: |
           cd release
-          bun run release-it {{ inputs.bump_level }} --ci
+          bun run release-it prepatch --ci
 
       - name: Capture release version
         id: capture_version
