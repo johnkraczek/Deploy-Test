@@ -14,7 +14,13 @@ on:
           - prepatch
           - preminor
           - premajor
-
+      prerelease-id:
+        type: choice
+        description: Prerelease ID
+        options:
+          - alpha
+          - beta
+          - rc
 permissions:
   contents: write
 
@@ -44,20 +50,24 @@ jobs:
         id: capture_current_version
         run: |
           cd release
-          echo "RELEASE_VERSION=$(bun run release-it --release-version --no-increment)" >> $GITHUB_ENV
+          echo "CURRENT_VERSION=$(bun run release-it --release-version --no-increment)" >> $GITHUB_ENV
 
-      - name: Debug Release Version
+      - name: Debug Current Version
         run: |
-          echo ${{ steps.capture_current_version.outputs.RELEASE_VERSION }}
+          echo ${{ steps.capture_current_version.outputs.CURRENT_VERSION }}
 
-      - name: Capture release version
+      - name: Capture Update Version
         id: capture_version
         run: |
           cd release
-          if [ "${{ inputs.bump_level }}" = "prepatch" ]; then
+          if ["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]; then
             echo "RELEASE_VERSION=$(bun run release-it --preRelease --release-version )" >> $GITHUB_ENV
           else
-            echo "RELEASE_VERSION=$(bun run release-it ${{inputs.bump_level}} --release-version )" >> $GITHUB_ENV
+            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+            else
+              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --release-version)" >> $GITHUB_ENV
+            fi
           fi
 
       - name: Debug Release Version
@@ -69,10 +79,14 @@ jobs:
           cd release
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          if [ "${{ inputs.bump_level }}" = "prepatch" ]; then
-            bun run release-it --preRelease --ci
+          if ["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]; then
+            echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
           else
-            bun run release-it "${{ inputs.bump_level }}" --ci
+            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+            else
+              echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+            fi
           fi
 
       # - name: Zip directory leaving out node_modules and .git
