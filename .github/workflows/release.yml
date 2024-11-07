@@ -104,14 +104,14 @@ jobs:
 
       - name: Debug Determine Release Command
         run: |
-          echo "${{ env.RELEASE_COMMAND }}""
+          echo ${{ env.RELEASE_COMMAND }}
 
       ## End Get Release Command
 
       - name: bump version
         run: |
           cd release
-          "${{ env.RELEASE_COMMAND }}"
+          ${{ env.RELEASE_COMMAND }}
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
