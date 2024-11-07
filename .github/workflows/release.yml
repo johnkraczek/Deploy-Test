@@ -50,7 +50,7 @@ jobs:
         id: capture_current_version
         run: |
           cd release
-          echo "CURRENT_VERSION=$(bun run release-it --release-version --no-increment)" >> $GITHUB_ENV
+          echo "CURRENT_VERSION=$(bun release-it --release-version --no-increment)" >> $GITHUB_ENV
 
       - name: Debug Current Version
         run: |
@@ -60,12 +60,12 @@ jobs:
         id: capture_version
         run: |
           if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-            echo "RELEASE_VERSION_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
+            echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_VERSION_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+              echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
             else
-              echo "RELEASE_VERSION_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
+              echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
             fi
           fi
 
@@ -87,12 +87,12 @@ jobs:
         id: determine_release_command
         run: |
           if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "RELEASE_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
+            echo "RELEASE_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "RELEASE_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
             else
-              echo "RELEASE_COMMAND='bun run release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
+              echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
             fi
           fi
 
@@ -106,12 +106,12 @@ jobs:
       #     git config user.name github-actions[bot]
       #     git config user.email github-actions[bot]@users.noreply.github.com
       #     if [["${{ env.CURRENT_VERSION }}" == *-*]]; then
-      #       echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
+      #       echo "RELEASE_VERSION=$(bun release-it --preRelease )" >> $GITHUB_ENV
       #     else
       #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
+      #         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }})" >> $GITHUB_ENV
       #       else
-      #         echo "RELEASE_VERSION=$(bun run release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
+      #         echo "RELEASE_VERSION=$(bun release-it ${{ inputs.bump_level }})" >> $GITHUB_ENV
       #       fi
       #     fi
 
