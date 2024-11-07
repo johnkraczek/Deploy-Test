@@ -63,7 +63,7 @@ jobs:
       - name: Get Update Version Command String
         run: |
           if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "RELEASE_VERSION_COMMAND='bun run release-it --preRelease --release-version'" >> $GITHUB_ENV
+            echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
               echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
@@ -80,7 +80,8 @@ jobs:
       - name: Capture Release Version
         run: |
           cd release
-          echo "RELEASE_VERSION=$( ${{ env.RELEASE_VERSION_COMMAND }} )" >> $GITHUB_ENV
+          RELEASE_VERSION=$(${{ env.RELEASE_VERSION_COMMAND }})
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
 
       - name: Debug Release Version
         run: |
