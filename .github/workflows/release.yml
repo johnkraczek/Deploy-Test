@@ -53,18 +53,26 @@ jobs:
         id: capture_version
         run: |
           cd release
-          echo "RELEASE_VERSION=$(bun run release-it ${{inputs.bump_level}} --release-version )" >> $GITHUB_ENV
+          if [ "${{ inputs.bump_level }}" = "prepatch" ]; then
+            echo "RELEASE_VERSION=$(bun run release-it --preRelease --release-version )" >> $GITHUB_ENV
+          else
+            echo "RELEASE_VERSION=$(bun run release-it ${{inputs.bump_level}} --release-version )" >> $GITHUB_ENV
+          fi
+
+      - name: Debug Release Version
+        run: |
+          echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
 
       - name: bump version
         run: |
           cd release
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          bun run release-it "${{inputs.bump_level}}" --ci
-
-      - name: Debug Release Version
-        run: |
-          echo ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+          if [ "${{ inputs.bump_level }}" = "prepatch" ]; then
+            bun run release-it --preRelease --ci
+          else
+            bun run release-it "${{ inputs.bump_level }}" --ci
+          fi
 
       # - name: Zip directory leaving out node_modules and .git
       #   run: |
