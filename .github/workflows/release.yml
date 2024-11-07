@@ -54,13 +54,13 @@ jobs:
 
       - name: Debug Current Version
         run: |
-          echo ${{ steps.capture_current_version.outputs.CURRENT_VERSION }}
+          echo ${{ CURRENT_VERSION }}
 
       - name: Capture Update Version
         id: capture_version
         run: |
           cd release
-          if [["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]]; then
+          if [["${{ CURRENT_VERSION }}" == *-*]]; then
             echo "RELEASE_VERSION=$(bun run release-it --preRelease --release-version )" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
@@ -79,7 +79,7 @@ jobs:
           cd release
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          if [["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]]; then
+          if [["${{ CURRENT_VERSION }}" == *-*]]; then
             echo "RELEASE_VERSION=$(bun run release-it --preRelease )" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
