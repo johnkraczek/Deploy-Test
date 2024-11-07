@@ -60,7 +60,7 @@ jobs:
         id: capture_version
         run: |
           cd release
-          if ["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]; then
+          if [["${{ steps.capture_current_version.outputs.CURRENT_VERSION }}" == *-*]]; then
             echo "RELEASE_VERSION=$(bun run release-it --preRelease --release-version )" >> $GITHUB_ENV
           else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
