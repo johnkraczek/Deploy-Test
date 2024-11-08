@@ -54,29 +54,31 @@ jobs:
           echo "CURRENT_VERSION=$(bun release-it --release-version --no-increment)" >> $GITHUB_ENV
           echo ${{ env.CURRENT_VERSION }}
 
-      - name: make command string
-        run: |
-          echo 'CMD_STRING="bun release-it --release-version"' >> $GITHUB_ENV
-
-      - name: TEST
-        run: |
-          echo "RELEASE_VERSION_COMMAND=$(${{env.CMD_STRING}})" >> $GITHUB_ENV
-          echo ${{ env.RELEASE_VERSION_COMMAND }}
-
       ## End Current Version
 
-      # ## GET the command to check the version we will be updating to.
-      # - name: Get Update Version Command String
-      #   run: |
-      #     if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-      #       echo "RELEASE_VERSION_COMMAND='bun release-it --preRelease --release-version'" >> $GITHUB_ENV
-      #     else
-      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-      #         echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
-      #       else
-      #         echo "RELEASE_VERSION_COMMAND='bun release-it ${{ inputs.bump_level }} --release-version'" >> $GITHUB_ENV
-      #       fi
-      #     fi
+      ## GET the command to check the version we will be updating to.
+      - name: Get Update Version
+        run: |
+          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+            PRE_RELEASE="--preRelease"
+            RELEASE_VERSION="--release-version"
+            BUMP_LEVEL=""
+            PRE_RELEASE_ID=""
+              else
+            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+              PRE_RELEASE=""
+              RELEASE_VERSION="--release-version"
+              BUMP_LEVEL="${{ inputs.bump_level }}"
+              PRE_RELEASE_ID="--preReleaseId=${{ inputs.prerelease-id }}"
+            else
+              PRE_RELEASE=""
+              RELEASE_VERSION="--release-version"
+              BUMP_LEVEL="${{ inputs.bump_level }}"
+              PRE_RELEASE_ID=""
+            fi
+          fi
+          echo "RELEASE_VERSION=$(bun release-it $BUMP_LEVEL $RELEASE_VERSION $PRE_RELEASE $PRE_RELEASE_ID)" >> $GITHUB_ENV
+          echo ${{ env.RELEASE_VERSION }}
 
       # - name: Debug Update Version Command string
       #   run: |
