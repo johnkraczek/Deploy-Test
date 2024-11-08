@@ -44,7 +44,7 @@ jobs:
       - name: Generate Download Link
         run: |
           version=$(jq -r '.version' source/package.json)
-          echo "DOWNLOAD_URL="https://github.com/${{env.REPO_OWNER}}/${{env.REPO_NAME}}/releases/download/${version}/${{env.REPO_NAME}}.zip" >> $GITHUB_ENV
+          echo "DOWNLOAD_URL=https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/${version}/${{ env.REPO_NAME }}.zip" >> $GITHUB_ENV
 
       - name: Make dist directory
         id: make-dist
