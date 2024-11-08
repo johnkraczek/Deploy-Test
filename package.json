@@ -1,6 +1,6 @@
 {
   "name": "ydtb-test-deploy",
-  "version": "0.2.4-alpha.5",
+  "version": "0.2.4",
   "license": "MIT",
   "private": true,
   "description": "YDTB Elementor Widgets",
