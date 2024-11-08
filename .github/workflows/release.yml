@@ -100,11 +100,9 @@ jobs:
       - name: Remove Build Files From Release Folder
         run: |
           cd release
-          rm -rf node_modules -f
-          rm -rf .git -f
-          .release-it.json -f
-          rm -rf .github -f
-          rm -rf .env -f
+          for dir in node_modules .git .release-it.json .github .env; do
+            rm -rf $dir -f
+          done
 
       - name: Zip directory leaving out node_modules and .git
         run: |
