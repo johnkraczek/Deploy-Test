@@ -46,16 +46,12 @@ jobs:
           bun install
           git checkout bun.lockb
 
-      ## Current Version
       - name: Capture Current Version
         id: capture_current_version
         run: |
           cd release
           echo "CURRENT_VERSION=$(bun release-it --release-version --no-increment)" >> $GITHUB_ENV
 
-      ## End Current Version
-
-      ## GET the command to check the version we will be updating to.
       - name: Set Update Version Flags
         run: |
           if [[ "${{ inputs.bump_level }}" == pre* ]]; then
@@ -80,50 +76,11 @@ jobs:
           cd release
           echo "RELEASE_VERSION=$(bun release-it ${{env.BUMP_LEVEL}} ${{env.PRE_RELEASE}} ${{env.PRE_RELEASE_ID}} --release-version)" >> $GITHUB_ENV
 
-      - name: Debug Update Version
+      - name: Bump The Version
+        id: bump_version
         run: |
-          echo ${{ env.RELEASE_VERSION}}
-
-      # - name: Debug Update Version Command string
-      #   run: |
-      #     echo ${{ env.RELEASE_VERSION_COMMAND }}
-      # ## End Update Version
-      # ## Release Version
-      # - name: Capture Release Version
-      #   run: |
-      #     cd release
-      #     $RELEASE_VERSION_COMMAND
-
-      # - name: Debug Release Version
-      #   run: |
-      #     echo "${{ env.RELEASE_VERSION }}"
-
-      ## End Release Version
-
-      # ## Get Release Command
-      # - name: Determine Release Command
-      #   id: determine_release_command
-      #   run: |
-      #     if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-      #       echo "RELEASE_COMMAND='bun release-it --preRelease'" >> $GITHUB_ENV
-      #     else
-      #       if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-      #         echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }} --preReleaseId=${{ inputs.prerelease-id }}'" >> $GITHUB_ENV
-      #       else
-      #         echo "RELEASE_COMMAND='bun release-it ${{ inputs.bump_level }}'" >> $GITHUB_ENV
-      #       fi
-      #     fi
-
-      # - name: Debug Determine Release Command
-      #   run: |
-      #     echo ${{ env.RELEASE_COMMAND }}
-
-      # ## End Get Release Command
-
-      # - name: bump version
-      #   run: |
-      #     cd release
-      #     eval $RELEASE_COMMAND
+          cd release
+          "$(bun release-it ${{env.BUMP_LEVEL}} ${{env.PRE_RELEASE}} ${{env.PRE_RELEASE_ID}})"
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
