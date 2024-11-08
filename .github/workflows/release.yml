@@ -108,7 +108,7 @@ jobs:
 
       - name: Zip directory leaving out node_modules and .git
         run: |
-          zip -r "${{env.REPO_NAME}}.${{env.RELEASE_VERSION}}.zip" ./${{env.REPO_NAME}} -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
+          zip -r "${{env.REPO_NAME}}.${{env.RELEASE_VERSION}}.zip" ${{env.REPO_NAME}}/ -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
       - name: Debug folder status
         run: |
