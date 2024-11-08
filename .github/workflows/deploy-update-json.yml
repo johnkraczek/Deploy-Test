@@ -3,8 +3,7 @@ name: Generate and Deploy Plugin Manifest
 
 on:
   release:
-    types:
-      - published
+    types: [released]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
