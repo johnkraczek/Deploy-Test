@@ -56,25 +56,25 @@ jobs:
       ## End Current Version
 
       ## GET the command to check the version we will be updating to.
-      - name: Get Update Version
+      - name: Set Update Version Flags
         run: |
-          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
-            echo "PRE_RELEASE=--preRelease" >> $GITHUB_ENV
-            echo "BUMP_LEVEL=" >> $GITHUB_ENV
-            echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
-          else
-            if [[ "${{ inputs.bump_level }}" == pre* ]]; then
-              echo "PRE_RELEASE=" >> $GITHUB_ENV
-              echo "BUMP_LEVEL=${{ inputs.bump_level }}" >> $GITHUB_ENV
-              echo "PRE_RELEASE_ID=--preReleaseId=${{ inputs.prerelease-id }}" >> $GITHUB_ENV
+          if [[ "${{ inputs.bump_level }}" == pre* ]]; then
+            if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+              echo "PRE_RELEASE=--preRelease" >> $GITHUB_ENV
+              echo "BUMP_LEVEL=" >> $GITHUB_ENV
+              echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
             else
               echo "PRE_RELEASE=" >> $GITHUB_ENV
               echo "BUMP_LEVEL=${{ inputs.bump_level }}" >> $GITHUB_ENV
-              echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
+              echo "PRE_RELEASE_ID=--preReleaseId=${{ inputs.prerelease-id }}" >> $GITHUB_ENV
             fi
+          else
+            echo "PRE_RELEASE=" >> $GITHUB_ENV
+            echo "BUMP_LEVEL=${{ inputs.bump_level }}" >> $GITHUB_ENV
+            echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
           fi
 
-      - name: Capture Current Version
+      - name: Capture Update Version
         id: capture_release_version
         run: |
           cd release
