@@ -20,6 +20,7 @@ on:
           - alpha
           - beta
           - rc
+
 permissions:
   contents: write
 
@@ -28,6 +29,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
