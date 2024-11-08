@@ -2,9 +2,9 @@
 name: Generate and Deploy Plugin Manifest
 
 on:
-  push:
-    tags:
-      - "[0-9]+.[0-9]+.[0-9]+"
+  release:
+    types:
+      - published
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:

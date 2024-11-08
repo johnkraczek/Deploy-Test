@@ -29,8 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+      # setting the environment variable for the PAT_TOKEN is the only way to get the next step deploy to trigger.
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -125,6 +124,8 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
           tag_name: ${{ env.RELEASE_VERSION}}
