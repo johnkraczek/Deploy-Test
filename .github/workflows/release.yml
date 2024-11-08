@@ -97,16 +97,16 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
 
-      - name: Remove Build Files From Release Folder
+      - name: Prepare Release
         run: |
-          cd release
           for dir in node_modules .git .release-it.json .github .env; do
-            rm -rf $dir -f
+            rm -rf release/$dir -f
           done
+          mv release/* ${{env.REPO_NAME}}/
 
       - name: Zip directory leaving out node_modules and .git
         run: |
-          zip -r "${{env.REPO_NAME}}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
+          zip -r "${{env.REPO_NAME}}.${{env.RELEASE_VERSION}}.zip" ./${{env.REPO_NAME}} -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
       - name: Debug folder status
         run: |
