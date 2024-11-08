@@ -23,7 +23,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/master'
+    if: ${{ ! (contains(github.event.release.tag_name, 'beta') || contains(github.event.release.tag_name, 'rc') || contains(github.event.release.tag_name, 'alpha')) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,9 +66,6 @@ jobs:
              .sections.changelog = $changelog')
 
           echo "$manifest" > dist/manifest.json
-
-      - name: List Directory
-        run: ls -la dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
