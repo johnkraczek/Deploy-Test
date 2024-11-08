@@ -125,10 +125,9 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
-        env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+          token: ${{ secrets.PAT_TOKEN }}
           tag_name: ${{ env.RELEASE_VERSION}}
           prerelease: ${{ env.PRE_RELEASE != '' && env.PRE_RELEASE != 'false' }}
           files: |
