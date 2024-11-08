@@ -77,7 +77,14 @@ jobs:
               echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
             fi
           fi
-          echo "RELEASE_VERSION=$(bun release-it ${{ env.BUMP_LEVEL }} ${{ env.RELEASE_VERSION }} ${{ env.PRE_RELEASE }} ${{ env.PRE_RELEASE_ID }})" >> $GITHUB_ENV
+      # echo "RELEASE_VERSION=$(bun release-it ${{ env.BUMP_LEVEL }} ${{ env.RELEASE_VERSION }} ${{ env.PRE_RELEASE }} ${{ env.PRE_RELEASE_ID }})" >> $GITHUB_ENV
+      # echo ${{ env.RELEASE_VERSION }}
+
+      - name: Capture Current Version
+        id: capture_current_version
+        run: |
+          cd release
+          echo "RELEASE_VERSION=$(bun release-it --release-version)" >> $GITHUB_ENV
           echo ${{ env.RELEASE_VERSION }}
 
       # - name: Debug Update Version Command string
