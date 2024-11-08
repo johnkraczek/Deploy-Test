@@ -97,6 +97,15 @@ jobs:
         run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
 
+      - name: Remove Build Files From Release Folder
+        run: |
+          cd release
+          rm -rf node_modules -f
+          rm -rf .git -f
+          .release-it.json -f
+          rm -rf .github -f
+          rm -rf .env -f
+
       - name: Zip directory leaving out node_modules and .git
         run: |
           zip -r "${{env.REPO_NAME}}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
@@ -109,7 +118,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-          tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-          prerelease: ${{ inputs.bump_level == 'prepatch' }}
+          tag_name: ${{ env.RELEASE_VERSION}}
+          prerelease: ${{ env.PRE_RELEASE != '' && env.PRE_RELEASE != 'false' }}
           files: |
             *.zip
