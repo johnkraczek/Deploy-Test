@@ -99,9 +99,11 @@ jobs:
 
       - name: Prepare Release
         run: |
-          for dir in node_modules .git .release-it.json .github .env; do
-            rm -rf release/$dir -f
-          done
+          rm -rf release/.git
+          rm -rf release/.release-it.json
+          rm -rf release/.github
+          rm -rf release/.env
+          rm -rf release/node_modules
           mv release/* ${{env.REPO_NAME}}/
 
       - name: Zip directory leaving out node_modules and .git
