@@ -59,12 +59,12 @@ jobs:
       ## GET the command to check the version we will be updating to.
       - name: Get Update Version
         run: |
-            if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
+          if [[ "${{ env.CURRENT_VERSION }}" == *-* ]]; then
             echo "PRE_RELEASE=--preRelease" >> $GITHUB_ENV
             echo "RELEASE_VERSION=--release-version" >> $GITHUB_ENV
             echo "BUMP_LEVEL=" >> $GITHUB_ENV
             echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
-            else
+          else
             if [[ "${{ inputs.bump_level }}" == pre* ]]; then
               echo "PRE_RELEASE=" >> $GITHUB_ENV
               echo "RELEASE_VERSION=--release-version" >> $GITHUB_ENV
@@ -76,7 +76,7 @@ jobs:
               echo "BUMP_LEVEL=${{ inputs.bump_level }}" >> $GITHUB_ENV
               echo "PRE_RELEASE_ID=" >> $GITHUB_ENV
             fi
-            fi
+          fi
           echo "RELEASE_VERSION=$(bun release-it ${{ env.BUMP_LEVEL }} ${{ env.RELEASE_VERSION }} ${{ env.PRE_RELEASE }} ${{ env.PRE_RELEASE_ID }})" >> $GITHUB_ENV
           echo ${{ env.RELEASE_VERSION }}
 
