@@ -93,21 +93,24 @@ jobs:
         run: |
           echo "${{ env.BUMP_OUTPUT }}"
 
-# - name: Zip directory leaving out node_modules and .git
-#   run: |
+      - name: Set Repo Name
+        run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
 
-#     zip -r "${dir_name}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
+      - name: Zip directory leaving out node_modules and .git
+        run: |
+          zip -r "${{env.REPO_NAME}}.zip" ./release -x "node_modules/*" -x ".git/*" -x ".release-it.json" -x ".github/*"
 
-# - name: Debug folder status
-#   run: |
-#     ls -la
+      - name: Debug folder status
+        run: |
+          ls -la
 
-# - name: Release
-#   uses: softprops/action-gh-release@v2
-#   if: startsWith(github.ref, 'refs/tags/')
-#   with:
-#     name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-#     tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
-#     prerelease: ${{ inputs.bump_level == 'prepatch' }}
-#     files: |
-#       *.zip
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: Release ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+          tag_name: ${{ steps.capture_version.outputs.RELEASE_VERSION }}
+          prerelease: ${{ inputs.bump_level == 'prepatch' }}
+          files: |
+            *.zip
