@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: release
+          token: ${{ secrets.PAT_TOKEN }}
 
       - uses: php-actions/composer@v6
         with:
