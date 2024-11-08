@@ -95,7 +95,7 @@ jobs:
 
       - name: Set Repo Name
         run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
+          echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Prepare Release
         run: |
@@ -104,7 +104,10 @@ jobs:
           rm -rf release/.github
           rm -rf release/.env
           rm -rf release/node_modules
-          mv release/* ${{env.REPO_NAME}}/
+
+      - name: Rename Folder
+        run: |
+          mv release ${{env.REPO_NAME}}
 
       - name: List Directory
         run: |
