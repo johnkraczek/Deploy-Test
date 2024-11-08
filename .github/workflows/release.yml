@@ -128,3 +128,7 @@ jobs:
           prerelease: ${{ env.PRE_RELEASE != '' && env.PRE_RELEASE != 'false' }}
           files: |
             *.zip
+
+  deploy:
+    uses: ./.github/workflows/deploy-update-json.yml
+    secrets: inherit
