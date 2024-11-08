@@ -82,7 +82,11 @@ jobs:
           cd release
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          "$(bun release-it ${{env.BUMP_LEVEL}} ${{env.PRE_RELEASE}} ${{env.PRE_RELEASE_ID}} --ci)"
+          echo "BUMP_OUTPUT=$(bun release-it ${{env.BUMP_LEVEL}} ${{env.PRE_RELEASE}} ${{env.PRE_RELEASE_ID}} --ci)" >> $GITHUB_ENV
+
+      - name: Debug The Bump
+        run: |
+          echo "${{ env.BUMP_OUTPUT }}"
 
 # - name: Zip directory leaving out node_modules and .git
 #   run: |
