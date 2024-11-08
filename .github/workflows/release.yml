@@ -82,6 +82,7 @@ jobs:
 
       - name: Bump The Version
         id: bump_version
+        continue-on-error: true
         run: |
           cd release
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
